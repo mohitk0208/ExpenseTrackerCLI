@@ -10,7 +10,7 @@ public interface ExpenseService {
     List<Expense> getAllExpenses();
     List<Expense> getAllExpenseByCategory(String category);
     Expense updateExpense(String id, String description, String category, Float amount);
-    Void deleteExpenseById(String id);
+    void deleteExpenseById(String id);
     String getExpenseSummary();
     String getExpenseSummaryByMonth(Integer month);
 }

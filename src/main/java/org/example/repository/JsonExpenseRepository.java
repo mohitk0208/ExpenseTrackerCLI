@@ -7,10 +7,7 @@ import org.example.models.Expense;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class JsonExpenseRepository implements ExpenseRepository {
 
@@ -44,8 +41,6 @@ public class JsonExpenseRepository implements ExpenseRepository {
                         return expense;
                     }).toList());
         } else {
-            String id = UUID.randomUUID().toString();
-            expense.setId(id);
             List<Expense> updatedExpenses = new ArrayList<>(getAllExpenses());
             updatedExpenses.add(expense);
             writeExpensesToJsonFile(updatedExpenses);
