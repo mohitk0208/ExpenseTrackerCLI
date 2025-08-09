@@ -1,5 +1,11 @@
 package org.example;
 
+import org.example.cli.AddExpense;
+import org.example.cli.ListExpenses;
+import org.example.repository.ExpenseRepository;
+import org.example.repository.JsonExpenseRepository;
+import org.example.service.ExpenseService;
+import org.example.service.ExpenseServiceImpl;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -7,12 +13,22 @@ import picocli.CommandLine;
         description = "CLI application for tracking expenses.",
         mixinStandardHelpOptions = true,
         version = "Expense Tracker CLI 1.0",
-        subcommands = {}
+        subcommands = {AddExpense.class, ListExpenses.class}
 )
 public class ExpenseTrackerCLI implements Runnable{
 
+    public ExpenseService expenseService;
+
+    public ExpenseTrackerCLI() {
+        ExpenseRepository expenseRepository = new JsonExpenseRepository("data/expenses.json");
+        this.expenseService = new ExpenseServiceImpl(expenseRepository);
+    }
+
     public static void main(String[] args) {
-        System.out.println("Welcome to Expense Tracker CLI application.");
+        CommandLine cmd = new CommandLine(new ExpenseTrackerCLI());
+        int exitCode = cmd.execute(args);
+
+        System.exit(exitCode);
     }
 
     @Override
