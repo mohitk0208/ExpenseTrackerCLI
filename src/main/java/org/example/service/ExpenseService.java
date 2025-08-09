@@ -11,6 +11,7 @@ public interface ExpenseService {
     List<Expense> getAllExpenseByCategory(String category);
     Expense updateExpense(String id, String description, String category, Float amount);
     void deleteExpenseById(String id);
-    String getExpenseSummary();
-    String getExpenseSummaryByMonth(Integer month);
+    Float getTotalExpense();
+    Float getTotalExpense(String category);
+    Float getTotalExpense(int month);
 }

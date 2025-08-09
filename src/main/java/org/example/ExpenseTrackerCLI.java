@@ -1,7 +1,6 @@
 package org.example;
 
-import org.example.cli.AddExpense;
-import org.example.cli.ListExpenses;
+import org.example.cli.*;
 import org.example.repository.ExpenseRepository;
 import org.example.repository.JsonExpenseRepository;
 import org.example.service.ExpenseService;
@@ -13,9 +12,9 @@ import picocli.CommandLine;
         description = "CLI application for tracking expenses.",
         mixinStandardHelpOptions = true,
         version = "Expense Tracker CLI 1.0",
-        subcommands = {AddExpense.class, ListExpenses.class}
+        subcommands = {AddExpense.class, ListExpenses.class, UpdateExpense.class, DeleteExpense.class, Summary.class}
 )
-public class ExpenseTrackerCLI implements Runnable{
+public class ExpenseTrackerCLI implements Runnable {
 
     public ExpenseService expenseService;
 

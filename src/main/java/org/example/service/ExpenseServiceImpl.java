@@ -3,10 +3,7 @@ package org.example.service;
 import org.example.models.Expense;
 import org.example.repository.ExpenseRepository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class ExpenseServiceImpl implements ExpenseService {
 
@@ -63,7 +60,6 @@ public class ExpenseServiceImpl implements ExpenseService {
             if (category != null) {
                 expense.setCategory(category);
             }
-
             if (amount != null) {
                 expense.setAmount(amount);
             }
@@ -82,12 +78,30 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public String getExpenseSummary() {
-        return "";
+    public Float getTotalExpense() {
+        return getAllExpenses().stream()
+                .map(Expense::getAmount)
+                .reduce(0f, Float::sum);
     }
 
     @Override
-    public String getExpenseSummaryByMonth(Integer month) {
-        return "";
+    public Float getTotalExpense(String category) {
+        return getAllExpenseByCategory(category).stream()
+                .map(Expense::getAmount)
+                .reduce(0f, Float::sum);
     }
+
+    @Override
+    public Float getTotalExpense(int month) {
+        return getAllExpenses().stream()
+                .filter(expense -> {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(expense.getCreatedAt());
+
+                    return calendar.get(Calendar.MONTH) + 1 == month;
+                })
+                .map(Expense::getAmount)
+                .reduce(0f, Float::sum);
+    }
+
 }
