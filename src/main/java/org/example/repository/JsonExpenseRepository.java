@@ -24,6 +24,7 @@ public class JsonExpenseRepository implements ExpenseRepository {
             if (!databaseFile.exists()) {
                 boolean _ = databaseFile.getParentFile().mkdirs();
                 boolean __ = databaseFile.createNewFile();
+                writeExpensesToJsonFile(new ArrayList<>());
             }
         } catch (Exception e) {
             throw new RuntimeException(String.format("Could not create the Database file, filePath: (%s)%n", filePath));
@@ -32,19 +33,13 @@ public class JsonExpenseRepository implements ExpenseRepository {
 
     @Override
     public Expense save(Expense expense) {
-        if (expense.getId() != null && !expense.getId().isBlank()) {
-            writeExpensesToJsonFile(getAllExpenses().stream()
-                    .map(expense1 -> {
-                        if (expense1.getId().equals(expense.getId())) {
-                            return expense;
-                        }
-                        return expense;
-                    }).toList());
-        } else {
-            List<Expense> updatedExpenses = new ArrayList<>(getAllExpenses());
-            updatedExpenses.add(expense);
-            writeExpensesToJsonFile(updatedExpenses);
-        }
+        List<Expense> expenses = getAllExpenses().stream()
+                .filter(expense1 -> !expense1.getId().equals(expense.getId()))
+                .toList();
+
+        List<Expense> finalList = new ArrayList<>(expenses);
+        finalList.add(expense);
+        writeExpensesToJsonFile(finalList);
 
         return expense;
     }
