@@ -3,6 +3,8 @@ package org.example.service;
 import org.example.models.Expense;
 import org.example.repository.ExpenseRepository;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class ExpenseServiceImpl implements ExpenseService {
@@ -102,6 +104,36 @@ public class ExpenseServiceImpl implements ExpenseService {
                 })
                 .map(Expense::getAmount)
                 .reduce(0f, Float::sum);
+    }
+
+    @Override
+    public void exportToCSV(String filename) {
+        if (filename == null || filename.isBlank()) {
+            filename = "expenses.csv";
+        } else {
+            filename = filename + ".csv";
+        }
+
+        List<Expense> expenses = getAllExpenses();
+
+        try(FileWriter writer = new FileWriter(filename)){
+            // write header
+            writer.append("Id,Description,Amount,Category,CreatedAt,UpdatedAt\n");
+
+            //write rows
+            for (Expense expense:expenses) {
+                writer.append(expense.getId()).append(",");
+                writer.append(expense.getDescription()).append(",");
+                writer.append(expense.getCategory()).append(",");
+                writer.append(expense.getAmount().toString()).append(",");
+                writer.append(expense.getCreatedAt().toString()).append(",");
+                writer.append(expense.getUpdatedAt().toString()).append("\n");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Failed to export expenses data to CSV.");
+            throw new RuntimeException(e);
+        }
     }
 
 }

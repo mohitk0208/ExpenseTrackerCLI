@@ -14,4 +14,5 @@ public interface ExpenseService {
     Float getTotalExpense();
     Float getTotalExpense(String category);
     Float getTotalExpense(int month);
+    void exportToCSV(String filename);
 }

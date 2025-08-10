@@ -12,7 +12,7 @@ import picocli.CommandLine;
         description = "CLI application for tracking expenses.",
         mixinStandardHelpOptions = true,
         version = "Expense Tracker CLI 1.0",
-        subcommands = {AddExpense.class, ListExpenses.class, UpdateExpense.class, DeleteExpense.class, Summary.class}
+        subcommands = {AddExpense.class, ListExpenses.class, UpdateExpense.class, DeleteExpense.class, Summary.class, ExportExpenses.class}
 )
 public class ExpenseTrackerCLI implements Runnable {
 
